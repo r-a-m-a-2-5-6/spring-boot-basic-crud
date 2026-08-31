@@ -1,1 +1,4 @@
 # spring-boot-basic-crud
+
+# How it works (WhiteBoard)
+{"type":"excalidraw/clipboard","elements":[{"id":"GOMlTocX0gGVW3XTGhSxX","type":"arrow","x":1735.6781228601092,"y":243.23715056297632,"width":83.09358985340145,"height":0.9122304550599267,"angle":0,"strokeColor":"#1e1e1e","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"groupIds":[],"frameId":null,"index":"b2j","roundness":{"type":2},"seed":1684177773,"version":43,"versionNonce":2029951789,"isDeleted":false,"boundElements":null,"updated":1788204747582,"link":null,"locked":false,"points":[[0,0],[-83.09358985340145,0.9122304550599267]],"startBinding":{"elementId":"NWyTh5e7nXLe7544fwEed","mode":"orbit","fixedPoint":[0.13626188857999402,0.8637381114200061]},"endBinding":{"elementId":"3YiH68_TF95RQkeclRxqI","mode":"orbit","fixedPoint":[0.9041801843422875,0.9041801843422871]},"startArrowhead":null,"endArrowhead":"arrow","elbowed":false}],"files":{}}

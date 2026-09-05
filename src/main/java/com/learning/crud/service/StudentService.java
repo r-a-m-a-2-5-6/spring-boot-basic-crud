@@ -1,9 +1,14 @@
 package com.learning.crud.service;
 
+import com.learning.crud.dto.requestCreateStudentDto;
+import com.learning.crud.dto.requestUpdateStudentDto;
+import com.learning.crud.dto.responseCreateStudentDto;
 import com.learning.crud.entity.Student;
 import com.learning.crud.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,29 +21,66 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public Student createAccount(Student studentReq){
-        studentReq.setDeleted(false);
-        return studentRepository.save(studentReq);
+    public responseCreateStudentDto createAccount(requestCreateStudentDto studentReq){
+        Student createdStudent = mapToCreateDto(studentReq);
+
+        return mapToCreateResponseDto(studentRepository.save(createdStudent));
     }
 
-    public Student getStudent(Long id) {
+    private responseCreateStudentDto mapToCreateResponseDto(Student studentResp){
+        responseCreateStudentDto createdResponse = new responseCreateStudentDto();
+
+        createdResponse.setId(studentResp.getId());
+        createdResponse.setCreatedAt(studentResp.getCreatedAt());
+        createdResponse.setAge(studentResp.getAge());
+        createdResponse.setEmail(studentResp.getEmail());
+        createdResponse.setRollNo(studentResp.getRollNo());
+        createdResponse.setUpdatedAt(studentResp.getUpdatedAt());
+        createdResponse.setName(studentResp.getName());
+        createdResponse.setSubject(studentResp.getSubject());
+
+        return createdResponse;
+    }
+
+    private Student mapToCreateDto(requestCreateStudentDto studentReq) {
+
+        Student createdStudent = new Student();
+
+        createdStudent.setAge(studentReq.getAge());
+        createdStudent.setName(studentReq.getName());
+        createdStudent.setSubject(studentReq.getSubject());
+        createdStudent.setRollNo(studentReq.getRollNo());
+        createdStudent.setEmail(studentReq.getEmail());
+        createdStudent.setCreatedAt(LocalDateTime.now());
+        createdStudent.setUpdatedAt(LocalDateTime.now());
+        createdStudent.setDeleted(false);
+        return createdStudent;
+    }
+
+    public responseCreateStudentDto getStudent(Long id) {
         Optional<Student> student = studentRepository.findByIdAndDeletedIsFalse(id);
-
-        return student.orElse(null);
+        if (student.isEmpty())
+            return null;
+        Student studentResp = student.get();
+        return mapToCreateResponseDto(studentResp);
 
     }
 
-    public List<Student> getAllStudents() {
+    public List<responseCreateStudentDto> getAllStudents() {
 
-        List<Student> students = studentRepository.findByDeletedIsFalse();
+        List<Student> studentsList = studentRepository.findByDeletedIsFalse();
 
-        if(students.isEmpty())
+        if(studentsList.isEmpty())
             return null;
 
-        return students;
+        List<responseCreateStudentDto> studentList = new ArrayList<>();
+
+        for(Student student:studentsList )
+            studentList.add(mapToCreateResponseDto(student));
+        return studentList;
     }
 
-    public Student updateStudent(Long id, Student student) {
+    public responseCreateStudentDto updateStudent(Long id, requestUpdateStudentDto student) {
 
         Optional<Student> existingStudent = studentRepository.findByIdAndDeletedIsFalse(id);
 
@@ -50,11 +92,11 @@ public class StudentService {
 
         studentUpdate.setRollNo(student.getRollNo());
         studentUpdate.setSubject(student.getSubject());
-        studentUpdate.setEmail(student.getEmail());
         studentUpdate.setAge(student.getAge());
         studentUpdate.setName(student.getName());
         studentUpdate.setDeleted(false);
-        return studentRepository.save(studentUpdate);
+        studentUpdate.setUpdatedAt(LocalDateTime.now());
+        return mapToCreateResponseDto(studentRepository.save(studentUpdate));
     }
 
     public boolean deleteStudent(Long id) {
